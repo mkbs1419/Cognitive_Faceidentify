@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Cognitive Server</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="vendor/css/main.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <style>
+    body {
+      padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+      body {
+        padding-top: 56px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">FACE</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">識別
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="training.html">管理</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2>拍照</h2>
+        <div class="row">
+          <div class="col-lg-12" style="height: 60vh; padding: 10px;">
+            <video autoplay></video>
+          </div>
+          <div class="col-lg-4">
+            <button id="turnonBtn" type="button" class="btn btn-danger" onclick="turnonCam(this)">未啟動攝影機</button>
+            <button type="button" class="btn btn-primary" id="capture">拍照</button>
+            <button type="button" class="btn btn-info btn-block" id="IdentifyBtn" style="margin-top: 5px;">Identify</button>
+          </div>
+          <div class="col-lg-8">
+            <form class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="url" class="form-control" id="detectURL" placeholder="URL">
+              </div>
+              <button id="detectBtn" type="button" class="btn btn-primary mb-2">Detect</button>
+              <p>http://4ab853fa.ap.ngrok.io/face/AAA/A17.jpg</p>
+              <div id="flowText">先Detect，再Identify</div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <h2>結果</h2>
+        <div class="row">
+          <div class="col-lg-12" style="height: 30vh; padding: 10px;">
+            <div class="h-100" style="border:2px orange solid;">
+              <img id="profile_img" src="" title="員工照片" class="img-fluid" alt="員工照片">
+            </div>
+          </div>
+          <div class="col-lg-12" style="padding: 10px;">
+            <p id="resultText">結果文字</p>
+          </div>
+          <div class="col-lg-12" style="height: 30vh; padding: 10px;">
+            <div class="h-100" style="border:2px red solid;">
+              <img id="upload_img" src="" title="上傳照片" class="img-fluid" alt="上傳照片">
+              <!-- <canvas id="upload_img" class="img-fluid">
+                <p>Your Broswer not support canvas</p>
+              </canvas> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="vendor/js/main.js"></script>
+
+</body>
+
+</html>

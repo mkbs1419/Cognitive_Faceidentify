@@ -1,0 +1,129 @@
+'use strict';
+
+var constraints = {
+  video: true
+};
+
+var video = document.querySelector('video');
+
+function handleSuccess(stream) {
+  video.srcObject = stream;
+  track = stream.getTracks()[0];
+}
+
+function handleError(error) {
+  console.error('getUserMedia error: ', error);
+}
+
+
+var track;
+
+function turnonCam(Btn) {
+  // var turnonBtn = document.getElementById('turnonBtn');
+  if (Btn.className == "btn btn-danger") {
+    Btn.innerHTML = "已啟動攝影機";
+    Btn.className = "btn btn-success";
+
+    navigator.mediaDevices.getUserMedia(constraints).
+    then(handleSuccess).catch(handleError);
+
+    console.log("TRUN ON CAMERA.");
+  } else {
+    Btn.innerHTML = "未啟動攝影機";
+    Btn.className = "btn btn-danger";
+
+    track.stop();
+  }
+}
+
+// function upload_img_show(detectURL, response) {
+//   console.log(detectURL);
+//   console.log(response);
+//   var canvas = document.getElementById("upload_img");
+//   var context = canvas.getContext("2d");
+//   var base_image = new Image();
+//   base_image.src = detectURL;
+//   base_image.onload = function () {
+//     context.drawImage(base_image, 0, 0);
+//     console.log("upload img onload!");
+//   }
+// }
+
+var FACEID;
+
+$(document).ready(function () {
+  //
+  $("#detectBtn").click(function () {
+    var detectURL = $('#detectURL').val();
+    var dataJSON = JSON.stringify({
+      url: detectURL
+    })
+
+    $.ajax({
+        url: "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect",
+
+        // Request headers.
+        beforeSend: function (xhrObj) {
+          xhrObj.setRequestHeader("Content-Type", "application/json");
+          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", "e3d783c055a94a8db9be946cfe308f10");
+        },
+        type: "POST",
+        data: dataJSON
+      })
+      .done(function (response) {
+        $("#resultText").text("faceId: " + response[0].faceId + "\nfaceRectangle: {top: " + response[0].faceRectangle.top + ", left: " + response[0].faceRectangle.left + ", width: " + response[0].faceRectangle.width + ", height: " + response[0].faceRectangle.height + "}");
+        $("#flowText").text("Detect成功，請執行Identify");
+        $("#upload_img").attr("src", detectURL);
+      })
+      .done(function (response) {
+        //
+        console.log(response);
+        FACEID = response[0].faceId;
+      })
+      .fail(function () {
+        alert("error");
+      })
+  })
+
+  // Face - Identify
+  $("#IdentifyBtn").click(function () {
+    // FACEID
+    // var faceIds = new Array(FACEID);
+    var dataJSON = JSON.stringify({
+      faceIds: [FACEID],
+      personGroupId: "esuns",
+      maxNumOfCandidatesReturned: 1
+    })
+    console.log(dataJSON);
+    // document.querySelector("#imageDiv").src = detectURL;
+
+    $.ajax({
+        url: "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/identify",
+
+        // Request headers.
+        beforeSend: function (xhrObj) {
+          xhrObj.setRequestHeader("Content-Type", "application/json");
+          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", "e3d783c055a94a8db9be946cfe308f10");
+        },
+        type: "POST",
+        data: dataJSON
+      })
+      .done(function (response) {
+        // console.log(response);
+        var result = response[0].candidates[0]
+        var paragraph = document.getElementById("resultText");
+        paragraph.textContent += "\npersonId: " + result.personId + "\n信心程度: " + result.confidence;
+      })
+      .fail(function () {
+        alert("error");
+      })
+  })
+})
+
+
+
+
+// var canvas = document.getElementById("upload_img");
+// var ctx = canvas.getContext("2d");
+// ctx.strokeStyle = "lightblue";
+// ctx.strokeRect(10, 10, 50, 50);
