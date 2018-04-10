@@ -16,5 +16,5 @@ Face API 名詞解釋：
 
 ### 
 > 本範例使用到WebRTC
-
-> 先**Detect**照片中的人臉，再**Identify**這個人臉屬於PersonGroup中哪一個Person。
+> 先**Detect**照片中的人臉，再**Identify**這個人臉屬於PersonGroup中哪一個Person
+<!-- 參考網頁： https://dotblogs.com.tw/maduka/2017/01/09/214017 -->
